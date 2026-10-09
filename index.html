@@ -1,0 +1,1302 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#0b1020">
+    <title>Mobile Atlas: sua jornada Android & iOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #090d19;
+            --panel: #121a2c;
+            --panel2: #172137;
+            --stroke: #29334b;
+            --text: #eef3ff;
+            --muted: #9caac6;
+            --accent: #8a7cff;
+            --mint: #54e6c2;
+            --pink: #ff83b4
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(ellipse at 85% 0%, #24204d 0%, transparent 34%), radial-gradient(ellipse at 0% 35%, #102b35 0%, transparent 34%), var(--bg);
+            font: 15px 'DM Sans', sans-serif;
+            color: var(--text);
+            min-height: 100vh
+        }
+
+        button,
+        input {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid var(--mint);
+            outline-offset: 3px
+        }
+
+        .shell {
+            max-width: 1250px;
+            margin: auto;
+            padding: 26px 25px 70px
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px
+        }
+
+        .logo {
+            font: 700 23px 'Space Grotesk';
+            letter-spacing: -1px
+        }
+
+        .logo span {
+            color: var(--mint)
+        }
+
+        .pill {
+            border: 1px solid var(--stroke);
+            padding: 9px 14px;
+            border-radius: 100px;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .hero {
+            padding: 62px 0 38px;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 30px;
+            align-items: center
+        }
+
+        .eyebrow {
+            color: var(--mint);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase
+        }
+
+        .hero h1 {
+            font: 700 clamp(40px, 5.8vw, 74px)/1.04 'Space Grotesk';
+            letter-spacing: -3px;
+            margin: 17px 0
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(100deg, #a997ff, #65f2cf);
+            color: transparent;
+            background-clip: text
+        }
+
+        .hero p {
+            color: var(--muted);
+            line-height: 1.75;
+            max-width: 570px;
+            font-size: 16px
+        }
+
+        .orbit {
+            height: 300px;
+            display: grid;
+            place-items: center;
+            position: relative
+        }
+
+        .planet {
+            width: 200px;
+            height: 200px;
+            border-radius: 35%;
+            background: linear-gradient(145deg, #8a7cff, #3dd4b2);
+            display: grid;
+            place-items: center;
+            font: 700 72px 'Space Grotesk';
+            box-shadow: 0 0 110px #8072ff55;
+            animation: float 5s ease-in-out infinite;
+            transform: rotate(-12deg)
+        }
+
+        .orbit:before,
+        .orbit:after {
+            content: "";
+            position: absolute;
+            width: 290px;
+            height: 290px;
+            border: 1px solid #7166ba66;
+            border-radius: 50%;
+            transform: rotate(30deg) scaleY(.52)
+        }
+
+        .orbit:after {
+            width: 350px;
+            height: 350px;
+            transform: rotate(-30deg) scaleY(.5)
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-14px) rotate(-7deg)
+            }
+        }
+
+        .panel {
+            background: linear-gradient(145deg, #172036f5, #101729f5);
+            border: 1px solid var(--stroke);
+            border-radius: 22px;
+            padding: 25px;
+            box-shadow: 0 12px 35px #0002
+        }
+
+        .chooser {
+            display: flex;
+            align-items: end;
+            gap: 24px;
+            flex-wrap: wrap
+        }
+
+        .chooser>div {
+            flex: 1;
+            min-width: 220px
+        }
+
+        label {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px
+        }
+
+        .segments {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .segments button,
+        .btn {
+            border: 1px solid var(--stroke);
+            background: #1b263e;
+            color: var(--muted);
+            border-radius: 12px;
+            padding: 11px 15px;
+            transition: .2s
+        }
+
+        .segments button:hover,
+        .btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent)
+        }
+
+        .segments button.active {
+            background: #7568db;
+            color: white;
+            border-color: #9d92ff
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 45px 0 17px
+        }
+
+        .section-head h2 {
+            font: 700 25px 'Space Grotesk';
+            margin: 0
+        }
+
+        .section-head small {
+            color: var(--muted)
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px
+        }
+
+        .metric {
+            padding: 21px
+        }
+
+        .metric strong {
+            display: block;
+            font: 700 32px 'Space Grotesk';
+            margin: 8px 0
+        }
+
+        .metric small {
+            color: var(--muted)
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.35fr .65fr;
+            gap: 16px
+        }
+
+        .progressline {
+            height: 9px;
+            background: #27334b;
+            border-radius: 30px;
+            overflow: hidden;
+            margin: 16px 0
+        }
+
+        .progressline>div {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--mint));
+            transition: width .5s
+        }
+
+        .chart {
+            display: flex;
+            align-items: end;
+            gap: 8px;
+            height: 165px;
+            padding-top: 15px
+        }
+
+        .barwrap {
+            flex: 1;
+            min-width: 0;
+            text-align: center
+        }
+
+        .bar {
+            height: 120px;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            background: #202b43;
+            border-radius: 8px 8px 3px 3px;
+            overflow: hidden
+        }
+
+        .bar>div {
+            width: 100%;
+            background: linear-gradient(0deg, #7668e5, #59e5c4);
+            border-radius: 8px 8px 0 0;
+            transition: height .5s
+        }
+
+        .barwrap small {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 8px
+        }
+
+        .muted {
+            color: var(--muted);
+            line-height: 1.6
+        }
+
+        .module {
+            margin-bottom: 13px;
+            overflow: hidden
+        }
+
+        .module-head {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            justify-content: space-between
+        }
+
+        .module h3 {
+            font: 700 18px 'Space Grotesk';
+            margin: 0 0 6px
+        }
+
+        .module p {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.6
+        }
+
+        .module .tag {
+            color: var(--mint);
+            font-size: 12px;
+            white-space: nowrap
+        }
+
+        .tasks {
+            display: grid;
+            gap: 9px;
+            margin-top: 19px
+        }
+
+        .task {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #10192b;
+            border: 1px solid #25314a;
+            padding: 13px;
+            border-radius: 12px;
+            cursor: pointer;
+            line-height: 1.5
+        }
+
+        .task input {
+            accent-color: #65e3c2;
+            width: 17px;
+            height: 17px;
+            margin-top: 2px;
+            flex-shrink: 0
+        }
+
+        .task.done {
+            color: #8c9bb6;
+            text-decoration: line-through
+        }
+
+        .deliverable {
+            margin-top: 15px;
+            border-left: 3px solid var(--accent);
+            padding: 8px 12px;
+            color: #bfc9e1;
+            font-size: 13px;
+            line-height: 1.6
+        }
+
+        .resource {
+            color: #8be8d3;
+            text-decoration: none
+        }
+
+        .resource:hover {
+            text-decoration: underline
+        }
+
+        .mockups {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 13px
+        }
+
+        .phone {
+            border: 5px solid #303b56;
+            background: #f3f6ff;
+            color: #202a42;
+            border-radius: 27px;
+            min-height: 260px;
+            padding: 15px 11px;
+            box-shadow: 0 14px 30px #0004
+        }
+
+        .notch {
+            width: 57px;
+            height: 7px;
+            border-radius: 10px;
+            background: #273248;
+            margin: -8px auto 22px
+        }
+
+        .phone h4 {
+            margin: 0 0 14px;
+            font: 700 16px 'Space Grotesk'
+        }
+
+        .phone .fake {
+            background: white;
+            border: 1px solid #e2e7f4;
+            padding: 11px;
+            border-radius: 12px;
+            margin-bottom: 9px;
+            font-size: 11px
+        }
+
+        .phone .fake b {
+            display: block;
+            margin-bottom: 5px
+        }
+
+        .phone .fake i {
+            display: block;
+            background: #dce5fa;
+            height: 6px;
+            border-radius: 6px;
+            width: 80%
+        }
+
+        .phone .cta {
+            background: #7769e9;
+            color: white;
+            border-radius: 9px;
+            text-align: center;
+            padding: 10px;
+            font-size: 11px;
+            margin-top: 12px
+        }
+
+        .survey {
+            display: grid;
+            gap: 15px
+        }
+
+        .survey-item {
+            border-bottom: 1px solid var(--stroke);
+            padding-bottom: 15px
+        }
+
+        .survey-item .line {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px
+        }
+
+        .survey-item input {
+            width: 100%;
+            accent-color: #8e80ff;
+            margin-top: 13px
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .actions {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            font-size: 12px
+        }
+
+        .notice {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        @media(max-width:800px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 40px
+            }
+
+            .orbit {
+                display: none
+            }
+
+            .metrics {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .mockups {
+                grid-template-columns: repeat(3, minmax(175px, 1fr));
+                overflow: auto
+            }
+
+            .hero h1 {
+                letter-spacing: -2px
+            }
+
+            .shell {
+                padding: 18px 15px 55px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *:before,
+            *:after {
+                animation: none !important;
+                transition: none !important
+            }
+        }
+
+        select,
+        textarea {
+            font: inherit;
+            color: var(--text);
+            background: #10192b;
+            border: 1px solid var(--stroke);
+            border-radius: 10px;
+            padding: 10px
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 75px;
+            resize: vertical
+        }
+
+        a {
+            color: var(--mint)
+        }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 9px;
+            margin: 16px 0
+        }
+
+        .phase {
+            border: 1px solid var(--stroke);
+            background: #10192b;
+            border-radius: 13px;
+            padding: 14px 8px;
+            color: var(--muted);
+            text-align: left
+        }
+
+        .phase.active {
+            background: #302c59;
+            border-color: var(--accent);
+            color: var(--text)
+        }
+
+        .phase small {
+            display: block;
+            margin-top: 7px;
+            font-size: 11px
+        }
+
+        .phase-meter {
+            height: 3px;
+            background: #38445e;
+            margin-top: 10px;
+            border-radius: 8px
+        }
+
+        .phase-meter i {
+            display: block;
+            height: 100%;
+            background: var(--mint)
+        }
+
+        .week {
+            margin-top: 14px;
+            padding: 0
+        }
+
+        .week summary {
+            padding: 21px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            list-style: none
+        }
+
+        .week summary::-webkit-details-marker {
+            display: none
+        }
+
+        .week summary:after {
+            content: '＋';
+            margin-left: auto;
+            color: var(--mint)
+        }
+
+        .week[open] summary:after {
+            content: '−'
+        }
+
+        .week summary strong {
+            font: 600 17px 'Space Grotesk'
+        }
+
+        .week summary small {
+            display: block;
+            color: var(--mint);
+            font-size: 11px;
+            margin-bottom: 6px
+        }
+
+        .week-body {
+            border-top: 1px solid var(--stroke);
+            padding: 22px;
+            animation: appear .2s ease-out
+        }
+
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px
+        }
+
+        .week-body h4 {
+            font: 600 15px 'Space Grotesk';
+            color: var(--mint);
+            margin: 0 0 10px
+        }
+
+        .week-body p,
+        .week-body li {
+            line-height: 1.75;
+            color: #c0cde5
+        }
+
+        .week-body ul {
+            padding-left: 18px;
+            margin-top: 6px
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 30px;
+            background: #24334a;
+            color: var(--mint)
+        }
+
+        .roadmap-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .week-complete {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: var(--text);
+            font-size: 13px;
+            letter-spacing: 0;
+            text-transform: none;
+            margin: 0
+        }
+
+        .week-complete input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--mint)
+        }
+
+        .week-complete input:disabled {
+            opacity: .5
+        }
+
+        .proof {
+            margin-top: 20px;
+            background: #0f1728;
+            padding: 16px;
+            border-radius: 12px
+        }
+
+        .proof label {
+            font-size: 13px;
+            letter-spacing: 0;
+            text-transform: none;
+            display: flex;
+            gap: 10px;
+            align-items: start;
+            color: var(--text);
+            line-height: 1.6
+        }
+
+        .proof input {
+            accent-color: var(--mint);
+            margin-top: 4px
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: auto;
+            display: block
+        }
+
+        .legend {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--muted);
+            margin: 12px 0
+        }
+
+        .legend span:before {
+            content: '●';
+            color: var(--mint);
+            margin-right: 6px
+        }
+
+        .legend span:first-child:before {
+            color: #8a7cff
+        }
+
+        .chart-table {
+            font-size: 12px;
+            color: var(--muted);
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse
+        }
+
+        .chart-table td,
+        .chart-table th {
+            text-align: left;
+            padding: 9px;
+            border-bottom: 1px solid var(--stroke)
+        }
+
+        .device-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 20px 10px 30px
+        }
+
+        .device {
+            position: relative;
+            background: #f7f8fc;
+            border: 7px solid #2c3549;
+            border-radius: 40px;
+            padding: 22px 18px 16px;
+            color: #162135;
+            box-shadow: 0 18px 40px #0006;
+            min-height: 475px;
+            cursor: pointer;
+            text-align: left;
+            transition: .2s
+        }
+
+        .device:hover,
+        .device.selected {
+            transform: translateY(-5px);
+            border-color: #897cff
+        }
+
+        .device .island {
+            width: 80px;
+            height: 19px;
+            background: #161c29;
+            border-radius: 20px;
+            margin: -11px auto 20px
+        }
+
+        .status {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 12px
+        }
+
+        .device h4 {
+            font: 700 23px 'Space Grotesk';
+            margin: 8px 0
+        }
+
+        .device h5 {
+            font: 600 14px 'Space Grotesk';
+            margin: 18px 0 12px
+        }
+
+        .device small {
+            color: #7c859a
+        }
+
+        .balance {
+            color: white;
+            background: linear-gradient(130deg, #6b71ef, #4267ec);
+            padding: 22px 16px;
+            border-radius: 22px;
+            margin: 17px 0;
+            box-shadow: 0 10px 22px #6478ee40
+        }
+
+        .balance strong {
+            font: 700 30px 'Space Grotesk';
+            display: block;
+            margin: 12px 0
+        }
+
+        .balance small {
+            color: #e3e8ff
+        }
+
+        .mini-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 13px 11px;
+            border-radius: 15px;
+            margin: 9px 0;
+            font-size: 12px;
+            box-shadow: 0 4px 12px #11224405
+        }
+
+        .mini-row b {
+            display: block;
+            margin-bottom: 4px
+        }
+
+        .iconbox {
+            display: grid;
+            place-items: center;
+            width: 33px;
+            height: 33px;
+            border-radius: 12px;
+            background: #f0eafe;
+            color: #8465dc;
+            font-size: 18px;
+            flex-shrink: 0
+        }
+
+        .tabbar {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            border-radius: 18px;
+            padding: 13px 5px;
+            margin-top: 18px;
+            font-size: 10px;
+            color: #8b93a4
+        }
+
+        .tabbar b {
+            color: #6d62e9
+        }
+
+        .mini-bars {
+            height: 108px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            padding: 12px
+        }
+
+        .mini-bars i {
+            flex: 1;
+            background: linear-gradient(#8c86ff, #6579ed);
+            border-radius: 5px 5px 0 0
+        }
+
+        .donut {
+            width: 160px;
+            height: 160px;
+            background: conic-gradient(#8970ee 0 35%, #ff946d 35% 78%, #62c6b3 78%);
+            border-radius: 50%;
+            margin: 22px auto;
+            display: grid;
+            place-items: center
+        }
+
+        .donut>span {
+            width: 120px;
+            height: 120px;
+            background: #f7f8fc;
+            border-radius: 50%;
+            display: grid;
+            align-content: center;
+            text-align: center;
+            font-size: 12px
+        }
+
+        .donut b {
+            font-size: 23px;
+            display: block;
+            margin-top: 5px
+        }
+
+        .field {
+            border: 1px solid #e2e4ec;
+            background: white;
+            padding: 14px;
+            border-radius: 13px;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #7e8797
+        }
+
+        .field b {
+            display: block;
+            color: #25324d;
+            font-size: 15px;
+            margin-top: 6px
+        }
+
+        .phone-cta {
+            padding: 14px;
+            background: #6f66ec;
+            color: white;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 12px;
+            margin-top: 20px
+        }
+
+        .habit-hero {
+            background: linear-gradient(135deg, #e0ddff, #d8f6ed);
+            padding: 19px;
+            border-radius: 22px;
+            margin: 18px 0
+        }
+
+        .habit-hero b {
+            font-size: 32px;
+            display: block;
+            margin: 10px 0
+        }
+
+        .weekdays {
+            display: flex;
+            gap: 5px;
+            justify-content: space-between;
+            margin: 18px 0
+        }
+
+        .weekdays span {
+            border-radius: 10px;
+            background: #e9eafa;
+            padding: 9px 5px;
+            font-size: 10px;
+            text-align: center
+        }
+
+        .weekdays .today {
+            background: #7869df;
+            color: white
+        }
+
+        .screen-spec {
+            background: #10192b;
+            border: 1px solid var(--stroke);
+            padding: 22px;
+            border-radius: 17px
+        }
+
+        .screen-spec h3 {
+            margin: 0 0 12px
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px
+        }
+
+        .spec-grid li {
+            color: var(--muted);
+            line-height: 1.65;
+            margin-bottom: 7px
+        }
+
+        .mockups {
+            display: block
+        }
+
+        .project-scope {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 22px 0
+        }
+
+        .project-scope li {
+            color: var(--muted);
+            line-height: 1.7
+        }
+
+        .milestone {
+            padding: 14px;
+            border-radius: 12px;
+            background: #10192b;
+            margin: 10px 0;
+            color: var(--muted);
+            line-height: 1.6
+        }
+
+        .search {
+            background: #10192b;
+            border: 1px solid var(--stroke);
+            border-radius: 10px;
+            padding: 10px;
+            color: var(--text);
+            max-width: 250px
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d5fff0;
+            color: #163e31;
+            padding: 14px 22px;
+            border-radius: 13px;
+            z-index: 10;
+            max-width: 90vw;
+            box-shadow: 0 10px 35px #0007
+        }
+
+        .plan-nav {
+            margin-top: 20px;
+            justify-content: space-between
+        }
+
+        .resources {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .resources a {
+            border: 1px solid var(--stroke);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            text-decoration: none
+        }
+
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: var(--muted)
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(5px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        @media(max-width:1000px) {
+            .phase-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .device-row {
+                gap: 12px
+            }
+
+            .device {
+                padding: 18px 10px;
+                min-height: 430px
+            }
+
+            .device h4 {
+                font-size: 20px
+            }
+        }
+
+        @media(max-width:750px) {
+
+            .lesson-grid,
+            .spec-grid,
+            .project-scope {
+                grid-template-columns: 1fr
+            }
+
+            .device-row {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                padding: 20px 5px
+            }
+
+            .device {
+                min-width: 270px;
+                max-width: 300px;
+                flex: 0 0 85%;
+                scroll-snap-align: center
+            }
+
+            .week summary strong {
+                font-size: 15px
+            }
+
+            .phase-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .pill {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="shell">
+        <header class="top">
+            <div class="logo">✳ Mobile<span>Atlas</span></div><span class="pill"><a href="https://github.com/jezcosta" target="_blank">por: jezcosta</a></span>
+        </header>
+        <section class="hero">
+            <div>
+                <div class="eyebrow">Seu mapa para dominar o mobile</div>
+                <h1>Aprenda. Construa.<br><em>Evolua de verdade.</em></h1>
+                <p>Escolha sua plataforma e seu nível. Receba uma trilha prática, construa um aplicativo real, acompanhe
+                    seu crescimento e descubra o que estudar depois.</p>
+            </div>
+            <div class="orbit" aria-hidden="true">
+                <div class="planet" id="planet">⌘</div>
+            </div>
+        </section>
+        <section class="panel chooser">
+            <div><label>01 · Sua plataforma</label>
+                <div class="segments" id="platform"><button data-value="android">🤖 Android</button><button
+                        data-value="ios">🍎 iOS</button></div>
+            </div>
+            <div><label>02 · Seu nível atual</label>
+                <div class="segments" id="level"><button data-value="beginner">Iniciante</button><button
+                        data-value="intermediate">Intermediário</button><button data-value="advanced">Avançado</button>
+                </div>
+            </div>
+        </section>
+        <div class="section-head">
+            <h2>Seu painel de evolução</h2><small id="trackTitle"></small>
+        </div>
+        <section class="metrics">
+            <div class="panel metric"><small>Progresso da trilha</small><strong id="pct">0%</strong><small
+                    id="doneCount">0 tarefas concluídas</small></div>
+            <div class="panel metric"><small>Ritmo sugerido</small><strong id="weeks">—</strong><small>semanas de
+                    prática</small></div>
+            <div class="panel metric"><small>Confiança média</small><strong
+                    id="confidence">—</strong><small>autoavaliação / 5</small></div>
+            <div class="panel metric"><small>Próxima conquista</small><strong id="next"
+                    style="font-size:20px">—</strong><small>módulo em andamento</small></div>
+        </section>
+        <div class="section-head">
+            <h2>Visualize sua jornada</h2><small>Planejamento, conclusão e confiança são medidas diferentes</small>
+        </div>
+        <section class="grid">
+            <div class="panel"><b>Seu avanço por etapa</b>
+                <div id="chart" role="img" aria-label="Gráfico de conclusão por módulo"></div>
+            </div>
+            <div class="panel"><b>Como funciona</b>
+                <p class="muted">Cada semana tem estudo, exercício, entregável e validação. Conclua as evidências
+                    práticas antes de marcar a semana. Os prazos são sugestões: avance no seu ritmo.</p>
+                <div class="progressline">
+                    <div id="overallBar"></div>
+                </div><span class="notice">Dados salvos apenas neste navegador.</span>
+            </div>
+        </section>
+        <div class="section-head">
+            <h2>Seu projeto de ponta a ponta</h2><small>Um app que cresce junto com você</small>
+        </div>
+        <section class="panel">
+            <div class="eyebrow" id="projectType"></div>
+            <h2 id="projectName" style="font:700 28px 'Space Grotesk';margin:10px 0"></h2>
+            <p class="muted" id="projectDescription"></p>
+            <div class="mockups" id="mockups"></div>
+            <p class="notice">Referências visuais em HTML/CSS. Selecione uma tela para ver seu comportamento, estados e
+                critérios de implementação.</p>
+        </section>
+        <div class="section-head">
+            <h2>Plano de estudos</h2>
+            <div class="actions"><button class="btn" id="export">↓ Exportar progresso</button><button class="btn"
+                    id="import">↑ Importar progresso</button><input id="importFile" type="file"
+                    accept="application/json" hidden><button class="btn" id="reset">↺ Reiniciar trilha</button></div>
+        </div>
+        <div class="panel" id="roadmapControls"></div>
+        <div id="modules"></div>
+        <div id="phaseNav" class="actions"></div>
+        <div class="section-head">
+            <h2>Autoavaliação contínua</h2><small>De 1 (preciso praticar) a 5 (consigo ensinar)</small>
+        </div>
+        <section class="panel">
+            <p class="muted">Avalie como você se sente em cada assunto. Revise suas notas sempre que terminar um módulo.
+                Confiança não substitui demonstração prática: use os entregáveis como evidência.</p>
+            <div class="survey" id="survey"></div>
+        </section>
+        <footer class="footer">MobileAtlas · Feito para aprender construindo · Sem conta, sem rastreamento, com
+            progresso local.</footer>
+    </main>
+    <script>
+        const curriculum = { "android": { "beginner": [{ "title": "Ambiente e primeiros passos", "topics": ["Android Studio, SDK, emulador e projeto", "Kotlin: val, var, String, Int, Double e Boolean", "Git: commit, diff e histórico"], "exercise": "Crie um programa Kotlin que registra nome, meta e frequência de três hábitos. Execute também um app vazio.", "deliverable": "Repositório com README e programa de hábitos.", "criteria": ["Explica val versus var", "App instala e abre no emulador"] }, { "title": "Controle de fluxo e coleções", "topics": ["if, when, ranges e loops", "List, Set e Map: operações e mutabilidade", "Funções, parâmetros nomeados e retorno"], "exercise": "Calcule a taxa de conclusão de uma lista de hábitos. Trate lista vazia e metas diferentes.", "deliverable": "Funções de cálculo com exemplos.", "criteria": ["Lista vazia não divide por zero", "3 conclusões em 4 hábitos resultam em 75%"] }, { "title": "Null safety e modelos", "topics": ["Tipos nullable, safe call e Elvis", "data class, enum class e sealed interface", "Imutabilidade, igualdade e cópia de modelos"], "exercise": "Modele Habit e HabitLog. Defina lembrete opcional e estados de validação.", "deliverable": "Modelos e busca por identificador.", "criteria": ["Lembrete ausente não causa crash", "Evita operador !! e explica data class"] }, { "title": "Lambdas, erros e testes", "topics": ["map, filter, sortedBy e lambdas", "Exceções, Result e erros de domínio", "JUnit: arrange, act, assert e casos de borda"], "exercise": "Valide nome e filtros de hábitos. Teste nome vazio e identificador inexistente.", "deliverable": "Lógica de domínio com testes.", "criteria": ["Testes cobrem sucesso e erro", "Regra funciona sem Activity"] }, { "title": "Android e ciclo de vida", "topics": ["Activity: onCreate, onStart, onResume e onDestroy", "Manifest, recursos e configuração", "Rotação, recriação e processo encerrado"], "exercise": "Crie uma tela inicial e registre callbacks ao rotacionar e colocar em background.", "deliverable": "Tela inicial com relatório de lifecycle.", "criteria": ["Explica recriação versus processo morto", "Retomar o app não duplica elementos"] }, { "title": "Compose e componentes", "topics": ["Composable, Modifier e Material 3", "Column, Row, Box e dimensões flexíveis", "Temas, cores, tipografia e previews"], "exercise": "Reproduza o cartão de progresso e um cartão de hábito usando Compose.", "deliverable": "ProgressCard e HabitCard com previews.", "criteria": ["Componentes recebem dados por parâmetros", "Texto longo cabe sem corte indevido"] }, { "title": "Estado e listas", "topics": ["remember, mutableStateOf e rememberSaveable", "State hoisting e callbacks", "LazyColumn, keys estáveis e imutabilidade"], "exercise": "Monte a lista Hoje e implemente check-in em memória.", "deliverable": "Lista interativa com identidade estável.", "criteria": ["Check-in não altera outro item", "Rotação preserva o estado de UI planejado"] }, { "title": "Navegação e formulários", "topics": ["Navigation Compose, argumentos e back stack", "TextField, foco, teclado e validação", "Estados vazios e confirmação de exclusão"], "exercise": "Conecte Hoje, Novo hábito e Detalhes. Implemente criar, editar e excluir.", "deliverable": "CRUD completo em memória.", "criteria": ["Voltar preserva a lista", "Cancelar formulário não modifica dados"] }, { "title": "ViewModel e fluxo de estado", "topics": ["ViewModel, UiState e eventos da UI", "Fonte única de verdade e estado imutável", "collectAsStateWithLifecycle e lifecycle-aware collection"], "exercise": "Mova regras e estado da tela para um ViewModel. Evite guardar Activity nele.", "deliverable": "Tela conectada a ViewModel testável.", "criteria": ["UI não calcula estatísticas", "Recriação não perde a fonte de dados em memória do ViewModel"] }, { "title": "Coroutines e suspend", "topics": ["suspend, launch e viewModelScope", "Dispatchers Main, IO e Default", "Cancelamento cooperativo e exceções"], "exercise": "Simule carregamento lento e retry sem bloquear cliques. Cancele ao destruir o escopo.", "deliverable": "Estados loading, content e error.", "criteria": ["Não usa Thread.sleep no caminho de UI", "Job encerra junto com escopo"] }, { "title": "Flow e atualizações", "topics": ["Flow frio, StateFlow e SharedFlow", "map, combine e distinctUntilChanged", "Observação com lifecycle e tratamento de erros"], "exercise": "Combine hábitos e filtro de frequência para atualizar a lista.", "deliverable": "Filtro reativo com testes do estado.", "criteria": ["Alterar filtro não duplica coletores", "Explica state versus evento"] }, { "title": "Acessibilidade e adaptação", "topics": ["Semantics, contentDescription e TalkBack", "Escala de fonte, contraste e área de toque", "Paisagem e tamanhos de janela"], "exercise": "Valide as três telas com fonte grande e TalkBack.", "deliverable": "Capturas e roteiro de auditoria.", "criteria": ["Texto não encobre botões", "Leitor anuncia nome e check-in"] }, { "title": "Room e persistência", "topics": ["Entity, DAO, Database e queries", "Relações e índices básicos", "Repository e fonte local de verdade"], "exercise": "Persista hábitos e registros, com DAO em memória para testes.", "deliverable": "App mantém dados após reabrir.", "criteria": ["Reabertura conserva check-ins", "Falha de gravação aparece na UI"] }, { "title": "Datas e sequência", "topics": ["java.time, LocalDate e ZoneId", "Comparação por dia e virada de data", "Dias planejados e regra de sequência"], "exercise": "Calcule sequência considerando somente os dias previstos. Documente o fuso usado.", "deliverable": "Regras de sequência testadas.", "criteria": ["Mesmo dia não duplica check-in", "Dia não planejado não quebra a sequência"] }, { "title": "Estatísticas e gráfico", "topics": ["Agregação por semana e denominadores", "Componentes de gráfico e alternativa textual", "Cache de cálculos quando dados mudam"], "exercise": "Construa a tela Evolução com metas, sete dias e melhores sequências.", "deliverable": "Relatório baseado nos dados locais.", "criteria": ["Percentual não ultrapassa 100%", "Sem dados gera estado vazio útil"] }, { "title": "Revisão de arquitetura", "topics": ["Separação UI, data e regras de domínio", "Injeção por construtor e interfaces úteis", "Testes de repositório e regras"], "exercise": "Extraia duplicações e revise o fluxo de dados. Use DI manual antes de adicionar ferramentas.", "deliverable": "Versão local estável e desenho das dependências.", "criteria": ["ViewModel não depende de DAO concreto", "Explica por que criou cada interface"] }, { "title": "HTTP e serialização", "topics": ["Retrofit ou cliente HTTP equivalente", "DTO, serialização e códigos HTTP", "Timeout, conectividade e payload inválido"], "exercise": "Adicione dicas de bem-estar via JSON de demonstração. Use fixtures locais nos testes.", "deliverable": "Cliente HTTP com sucesso e erros.", "criteria": ["Falha HTTP não vira conteúdo válido", "Erro de parsing é tratado"] }, { "title": "Chamadas simultâneas", "topics": ["coroutineScope, async e await", "supervisorScope e falha parcial", "Cancelamento, timeout e uso correto de dispatcher"], "exercise": "Carregue dicas e resumo de exemplo em paralelo sem apagar o resumo local se a rede falhar.", "deliverable": "Dashboard com falha parcial e retry.", "criteria": ["Explica coroutineScope versus supervisorScope", "Resultado antigo não sobrescreve novo filtro"] }, { "title": "Cache e modo offline", "topics": ["Fonte local, validade do cache e refresh", "Estado sem rede e recuperação", "Separação leitura local e atualização remota"], "exercise": "Salve a última dica recebida e mostre-a sem conexão com data de atualização.", "deliverable": "Dicas offline sem comprometer hábitos locais.", "criteria": ["Sem rede continua permitindo check-in", "Dados desatualizados têm indicação"] }, { "title": "Lembretes e background", "topics": ["Permissão de notificações e canais", "WorkManager para trabalho adiável", "Diferença entre agendamento aproximado e horário exato"], "exercise": "Implemente lembrete aproximado e explique suas limitações. Não prometa precisão com WorkManager.", "deliverable": "Lembrete opcional e cancelamento por hábito.", "criteria": ["Negar permissão não bloqueia app", "Exclusão cancela trabalho associado"] }, { "title": "Testes de fluxo", "topics": ["JUnit de regras e testes de DAO", "Compose UI tests e semantics", "Test dispatcher e fixtures determinísticas"], "exercise": "Automatize criar → check-in → reabrir. Teste virada do dia e modo offline.", "deliverable": "Suite de fluxos críticos.", "criteria": ["Testes não precisam da internet", "Rodar duas vezes gera resultado igual"] }, { "title": "Performance e memória", "topics": ["Android Studio Profiler e inspeção de memória", "Recomposição, estabilidade e rolagem", "Trabalho pesado fora da thread principal"], "exercise": "Carregue 500 hábitos e investigue lentidão e retenção.", "deliverable": "Medição antes/depois e melhoria comprovada.", "criteria": ["Mesmo ambiente nos dois cenários", "Não mantém Activity em objeto de longa duração"] }, { "title": "Build e documentação", "topics": ["Build types, APK de release e assinatura", "Segredos e configurações fora do Git", "README e roteiro de validação manual"], "exercise": "Gere um build e documente execução e permissões. Publicação em loja é opcional.", "deliverable": "APK testável e documentação.", "criteria": ["Outra pessoa segue o README", "Repositório não contém chave de assinatura"] }, { "title": "Entrega e demonstração", "topics": ["Revisão de requisitos e limitações", "Retrospectiva e dívidas técnicas", "Demonstração de erros e acessibilidade"], "exercise": "Apresente criar hábito, check-in, evolução, persistência e lembretes em cinco minutos.", "deliverable": "Release de portfólio com vídeo e relatório.", "criteria": ["Critérios essenciais têm evidências", "Explica uma decisão e melhoria futura"] }], "intermediate": [{ "title": "Domínio financeiro e escopo", "topics": ["Dinheiro em centavos inteiros e moeda única BRL", "Transação, conta, categoria e orçamento", "Receita versus despesa, transferência e saldo inicial"], "exercise": "Modele o Luma: duas contas, categorias e transações. Escreva as invariantes antes da UI.", "deliverable": "Modelos com regras e testes de saldo.", "criteria": ["Transferência não aumenta receita", "10,10 + 20,20 resulta exatamente em 30,30"] }, { "title": "Arquitetura e SOLID aplicados", "topics": ["MVVM e fluxo unidirecional de estado", "SRP em regras e I/O, DIP nas dependências", "Injeção por construtor, Hilt e composition root e separação entre DTO, banco e domínio"], "exercise": "Implemente cadastrar transação sem dependência de tela ou rede. Compare arquitetura simples com camadas adicionais.", "deliverable": "Fluxo de criação com fake de repositório e decisão justificada.", "criteria": ["Trocar armazenamento não muda regras", "Explica onde uma camada extra seria desnecessária"] }, { "title": "Design system e dashboard", "topics": ["Tokens de cor, espaçamento e tipografia", "Compose Material 3, state hoisting e interoperabilidade com Views e componentes reutilizáveis", "Dashboard com saldo, comparação mensal e últimos lançamentos"], "exercise": "Construa os componentes das referências: saldo, linha de transação, categoria e barra de orçamento.", "deliverable": "Dashboard com dados de fixture e estados vazio/loading/error.", "criteria": ["Componente suporta valores grandes", "Layout adapta ao tamanho de fonte"] }, { "title": "Navegação e CRUD de lançamentos", "topics": ["Navigation Compose, deep links e back stack", "Formulário de valor, data, categoria e conta", "Validação, exclusão e efeito no histórico"], "exercise": "Implemente lista filtrável, criar, editar e excluir transações. Preserve filtros ao voltar.", "deliverable": "Fluxo completo de lançamentos em memória.", "criteria": ["Valor inválido não salva", "Editar transação atualiza o saldo corretamente"] }, { "title": "Persistência e migrações", "topics": ["Room: DAO, @Transaction, índices e migrations", "Atomicidade de transferência e integridade dos dados", "Migração de schema, índices e queries por período"], "exercise": "Persista contas e transações. Acrescente um campo com migração sem apagar dados anteriores.", "deliverable": "Banco local com migração testada.", "criteria": ["Falha não deixa metade da transferência", "Upgrade preserva os lançamentos existentes"] }, { "title": "Orçamentos e relatórios", "topics": ["Agrupamento por categoria e mês", "Limite, restante e gastos acima do orçamento", "Gráfico com legenda e valores acessíveis"], "exercise": "Implemente orçamento por categoria e relatório mensal. Defina regra para despesa estornada.", "deliverable": "Telas Análise e Orçamentos baseadas no banco.", "criteria": ["Trocar mês altera todos os indicadores", "Orçamento excedido mostra valor e alerta textual"] }, { "title": "Networking e contratos", "topics": ["Retrofit, serialização, interceptors e códigos HTTP", "DTOs, validação de payload e mapeamento", "Paginação, timeout e distinção de erros"], "exercise": "Use uma API mock documentada para categorias e sincronização. Versione fixtures e contrato.", "deliverable": "Cliente HTTP com testes de 200, erro e payload inválido.", "criteria": ["Sem serviço externo obrigatório", "Erro de validação não é retentado automaticamente"] }, { "title": "Concorrência estruturada", "topics": ["coroutineScope, supervisorScope, async/await e StateFlow", "Paralelismo de chamadas independentes", "Cancelamento, isolamento e resultados obsoletos"], "exercise": "Busque resumo e categorias em paralelo. Cancele a busca anterior ao mudar o mês.", "deliverable": "Dashboard assíncrono sem resultados fora de ordem.", "criteria": ["Resposta lenta de janeiro não substitui fevereiro", "Cancelamento não gera mensagem de erro ao usuário"] }, { "title": "Offline-first e fila", "topics": ["Banco como fonte de verdade", "Outbox, ids gerados no cliente e status pendente", "WorkManager com constraints e política de retry e retry com backoff"], "exercise": "Salve lançamento offline e sincronize depois com mock local. Identifique visualmente o item pendente.", "deliverable": "Fila persistente com tentativas e estado de erro.", "criteria": ["Reabrir app não perde fila", "Retry não duplica lançamento remoto"] }, { "title": "Conflitos e consistência", "topics": ["Versão do registro e detecção de edição concorrente", "Idempotência, deduplicação e ordenação", "Política explícita para excluir versus atualizar"], "exercise": "Simule duas edições do mesmo item. Documente política e exiba conflito sem sobrescrever silenciosamente.", "deliverable": "Resolução de conflito com cenários reproduzíveis.", "criteria": ["Repetir requisição mantém um lançamento", "Exclusão e atualização têm resultado definido"] }, { "title": "Acessibilidade e UI adaptativa", "topics": ["TalkBack, semantics, fonte ampliada e layouts adaptativos", "Texto grande, contraste e alternativas ao gráfico", "Tamanho de janela, teclado e foco"], "exercise": "Audite dashboard, cadastro e relatórios com leitor de tela. Adapte para tela grande.", "deliverable": "Capturas e evidências de auditoria.", "criteria": ["Gráfico tem resumo textual", "Formulário é operável com leitor de tela"] }, { "title": "Testes automatizados", "topics": ["JUnit, coroutine-test, Room tests e Compose UI tests", "Fakes para rede, relógio e storage", "Testes de fronteira de mês, estorno e saldo"], "exercise": "Teste regras, migração e fluxo criar → editar → excluir. Não use tempo real em testes de datas.", "deliverable": "Suite determinística para riscos financeiros.", "criteria": ["Mudança de mês não altera resultado aleatoriamente", "Teste falha se saldo ficar incorreto"] }, { "title": "Performance e diagnóstico", "topics": ["Android Studio Profiler, traces e inspeção de recomposição", "Paginação local e custo de agregação", "Medição de startup, rolagem e memória"], "exercise": "Gere 10 mil transações. Meça abertura e filtro mensal antes de otimizar queries.", "deliverable": "Relatório com ambiente, métricas e comparação.", "criteria": ["Resultados no mesmo dataset", "Otimização não muda totais"] }, { "title": "Privacidade e segurança básica", "topics": ["Android Keystore, proteção de credenciais, backups e HTTPS", "Não registrar valores e dados pessoais em logs", "Exportação consentida e exclusão dos dados locais"], "exercise": "Implemente bloqueio visual opcional e exportação CSV com confirmação. Use dados fictícios.", "deliverable": "Inventário de dados e controles implementados.", "criteria": ["Logs não expõem transações", "Bloqueio de UI não é descrito como criptografia do banco"] }, { "title": "Pipeline e distribuição", "topics": ["Gradle em CI, build variants, signing e distribuição opcional", "Checks de regras, integração e build", "Configurações de ambiente e segredos fora do Git"], "exercise": "Monte pipeline que executa testes e gera build. Documente assinatura/distribuição opcional.", "deliverable": "Build reproduzível e workflow CI.", "criteria": ["Falha de teste bloqueia geração de artefato", "Nenhum token fica versionado"] }, { "title": "Entrega de portfólio", "topics": ["Especificação de fluxos e estados", "ADRs das decisões e limitações", "Roteiro de demonstração offline e online"], "exercise": "Entregue Luma com dashboard, contas, lançamentos, orçamentos, análise e sync mock. Grave demonstração.", "deliverable": "Release, README e relatório de validação.", "criteria": ["Demonstra erro, conflito e recuperação", "Explica trade-offs com evidências"] }], "advanced": [{ "title": "ADRs e fronteiras de módulos", "topics": ["Mapear features Accounts, Transactions, Budgets e Analytics", "Distinguir contrato público, implementação e composition root", "Comparar feature-first versus camadas e medir impacto no build"], "exercise": "Escreva dois ADRs com contexto, opções, decisão, consequências e revisão. Desenhe um grafo de dependências sem ciclos.", "deliverable": "ADRs de modularização e offline-first com diagrama e metas.", "criteria": ["Justifica fronteiras pelo motivo de mudança", "Explica dependência permitida e proibida em cada módulo"] }, { "title": "Modularização e evolução de APIs", "topics": ["Módulos Gradle, api versus implementation e convenções de build", "DTOs internos e interfaces públicas mínimas", "Compatibilidade, depreciação e migração incremental"], "exercise": "Extraia Transactions com contrato público. Migre consumidores em dois passos mantendo app compilável.", "deliverable": "Feature isolada com teste de contrato e plano de migração.", "criteria": ["Módulo não importa UI de outra feature", "Uma mudança interna não quebra consumidor"] }, { "title": "Concorrência e segurança de estado", "topics": ["Structured concurrency, Mutex, atomicidade e Flow com múltiplos produtores", "Reentrância, cancelamento e lifetime de tarefas", "Diferenciar exclusão mútua de ordenação de eventos"], "exercise": "Simule refresh, edição e logout simultâneos. Defina dono de cada estado e elimine escrita após logout.", "deliverable": "Mapa de isolamento e testes das interleavings críticas.", "criteria": ["Execução repetida não perde atualização", "Explica por que serializar chamadas não basta"] }, { "title": "Motor de sincronização resiliente", "topics": ["Outbox transacional, ids estáveis e tombstones", "Idempotency key, versionamento e política de conflito", "Retry limitado, backoff e recuperação após crash"], "exercise": "Implemente sync mock que cai após servidor aceitar a operação. Reenvie sem duplicação e preserve ordem por entidade.", "deliverable": "Motor com simulação de crash, duplicata e DELETE→recriação.", "criteria": ["Reenvio não duplica dados", "Delete e recriação da chave respeitam ordem e versão"] }, { "title": "Migrações e integridade financeira", "topics": ["Schema versionado e upgrade de banco", "Transferências e invariantes transacionais", "Recorrências por competência e prevenção de geração dupla"], "exercise": "Adicione transferências e recorrências. Teste upgrade com base antiga e execução duas vezes do gerador.", "deliverable": "Migration e gerador idempotente com fixtures antigas.", "criteria": ["Rollback mantém integridade da transferência", "Mesma competência não gera cobrança duplicada"] }, { "title": "Design system em escala", "topics": ["Compose Material 3, state hoisting e interoperabilidade com Views", "Tokens versionados e componentes com contrato", "Estados, acessibilidade e integração entre UI legada/moderna"], "exercise": "Monte catálogo de componentes e tela de detalhe de orçamento. Defina política de breaking changes visuais.", "deliverable": "Design system com exemplos, estados e testes relevantes.", "criteria": ["Componentes não conhecem regra financeira", "Letras grandes e contraste validados"] }, { "title": "Performance com orçamento", "topics": ["Macrobenchmark, Baseline Profiles e startup/scroll em dispositivo", "Startup, latência p95, rolagem e consumo de memória", "Dataset, warmup, device e repetição controlados"], "exercise": "Defina metas após medir baseline. Compare consultas, agregações e renderização com 10 mil transações.", "deliverable": "Relatório reproduzível com mediana/p95 e limitações.", "criteria": ["Meta vem de baseline documentado", "Melhoria tem evidência e mantém os totais"] }, { "title": "Threat modeling e dados sensíveis", "topics": ["Android Keystore, proteção de credenciais, backups e HTTPS", "Ativos, fronteiras de confiança e cenários de abuso", "Dados em repouso, backups, logs e exposição em background"], "exercise": "Desenhe threat model para armazenamento, exportação e sessão. Implemente controles para os três riscos prioritários.", "deliverable": "Modelo de ameaças, controles e riscos residuais.", "criteria": ["Segredos não estão no app/repositório", "Descreve proteção real sem prometer invulnerabilidade"] }, { "title": "Estratégia de testes e quality gates", "topics": ["Pirâmide orientada a risco financeiro", "JUnit, coroutine-test, Room tests e Compose UI tests e testes de contrato de API", "Fixtures antigas, rede instável e relógio controlado"], "exercise": "Defina matriz risco→teste. Automatize saldo, recorrência, sync e migração com gate na CI.", "deliverable": "Matriz e pipeline com falha intencional demonstrada.", "criteria": ["Gate detecta duplicação de operação", "Testes críticos independem de serviço externo"] }, { "title": "Observabilidade e falhas", "topics": ["Logs estruturados sem conteúdo pessoal", "Métricas de fila, falhas e tempos", "Correlation id e classificação de erros"], "exercise": "Adicione diagnóstico de sync e simule incidente: fila parada com versão incompatível.", "deliverable": "Painel local de diagnóstico e runbook de incidente.", "criteria": ["Diagnóstico não expõe valores/nomes", "Runbook permite reproduzir e recuperar falha"] }, { "title": "Entrega progressiva e compatibilidade", "topics": ["Gradle em CI, build variants, signing e distribuição opcional", "Feature flags com fallback local seguro", "Rollout, compatibilidade com servidor e estratégia de desativação"], "exercise": "Prepare release candidate e flag de recorrências. Simule backend antigo e desligue feature sem perder dados.", "deliverable": "Plano de release com critérios de parada e mitigação.", "criteria": ["Flag não invalida registros existentes", "Distingue rollback de build e mitigação por flag"] }, { "title": "Revisão arquitetural e mentoria", "topics": ["Avaliação de trade-offs com custo e risco", "Documentação de onboarding e code review", "Dívida priorizada por impacto e próximo experimento"], "exercise": "Faça revisão técnica do Luma Pro e prepare um onboarding de 15 minutos. Relacione decisões a evidências.", "deliverable": "Release, vídeo, ADRs, benchmarks e revisão externa sugerida.", "criteria": ["Revisor executa sem ajuda", "Consegue defender e reconsiderar decisões com dados"] }] }, "ios": { "beginner": [{ "title": "Ambiente e primeiros passos", "topics": ["Xcode: projeto, target, scheme e Simulator", "Swift: let, var, String, Int, Double e Bool", "Git: commit, diff e histórico"], "exercise": "Crie um playground que registra nome, meta e frequência de três hábitos. Execute também um app vazio no Simulator.", "deliverable": "Repositório com README de execução e playground de hábitos.", "criteria": ["Explica let versus var com um exemplo", "Projeto abre e executa sem erros"] }, { "title": "Controle de fluxo e coleções", "topics": ["if, guard, switch e intervalos", "Arrays, Set e Dictionary: acesso e transformação", "Funções, parâmetros, retorno e escopo"], "exercise": "Calcule a taxa de conclusão de uma lista de hábitos sem interface. Trate lista vazia e metas diferentes.", "deliverable": "Funções de cálculo com exemplos documentados.", "criteria": ["Lista vazia não divide por zero", "Entrada de 3 conclusões em 4 hábitos resulta em 75%"] }, { "title": "Optionals e modelos de domínio", "topics": ["Optional, if let, guard let e nil-coalescing", "struct, enum, Identifiable e Equatable", "Value semantics e diferença entre struct e class"], "exercise": "Modele Habit e HabitLog, com id, nome, frequência e data. Um lembrete pode ser ausente.", "deliverable": "Modelos e função que localiza um hábito por identificador.", "criteria": ["Ausência de lembrete não causa crash", "Evita force unwrap e explica escolha por struct"] }, { "title": "Closures, erros e primeiros testes", "topics": ["map, filter, sorted e closures", "throws, do/catch e erros de validação", "XCTest: arrange, act, assert e casos de borda"], "exercise": "Implemente a validação do nome e filtros de hábitos. Escreva testes para nome vazio e hábito inexistente.", "deliverable": "Lógica de domínio com testes automatizados.", "criteria": ["Testes cobrem sucesso e falha", "Funções não dependem de uma tela para funcionar"] }, { "title": "UIKit e ciclo de vida", "topics": ["UIViewController: viewDidLoad, viewWillAppear e viewDidAppear", "UIView, subviews e eventos de UIControl", "Navigation controller e presentation"], "exercise": "Crie uma lista estática de hábitos em View Code. Registre os eventos ao abrir e voltar da tela.", "deliverable": "Tela UIKit inicial com navegação para detalhes.", "criteria": ["Explica quando configurar UI e quando atualizar dados", "Voltar não duplica elementos na tela"] }, { "title": "Auto Layout e componentes", "topics": ["Constraints, anchors, safeArea e UIStackView", "Hugging, compression resistance e texto multilinha", "Componentização de cartão, título e botão"], "exercise": "Reproduza o cartão de progresso do projeto com constraints, sem coordenadas fixas.", "deliverable": "Cartão e formulário UIKit reutilizáveis.", "criteria": ["Sem warnings de constraints", "Texto longo cabe em dois tamanhos de iPhone"] }, { "title": "Listas e formulários UIKit", "topics": ["UITableView, cells e reutilização", "Delegates, data source e callbacks", "UITextField, teclado e validação inline"], "exercise": "Mostre os hábitos em uma tabela e abra um formulário para adicionar um novo item em memória.", "deliverable": "Fluxo lista → cadastro → detalhe em UIKit.", "criteria": ["Reutilização não troca os dados das células", "Nome vazio gera mensagem e não salva"] }, { "title": "Estado e organização inicial", "topics": ["Separação entre modelo, tela e lógica", "Injeção pelo inicializador e protocol básico", "ARC, weak e ciclos de retenção em closures"], "exercise": "Extraia as regras do controller para um objeto testável e injete um armazenamento em memória.", "deliverable": "Primeira arquitetura simples com teste do cadastro.", "criteria": ["Controller não calcula as estatísticas", "Tela de detalhe é liberada após fechar"] }, { "title": "SwiftUI: construir a tela Hoje", "topics": ["View, body, VStack, HStack e ZStack", "Modifiers: padding, frame, background e clipShape", "SF Symbols, cores e tipografia sem dimensões rígidas"], "exercise": "Recrie a tela Hoje em SwiftUI usando os modelos já existentes e dados de exemplo.", "deliverable": "Tela Hoje com componentes HabitCard e ProgressCard.", "criteria": ["Componentes recebem dados por parâmetros", "Layout funciona com nomes curtos e longos"] }, { "title": "Estado e fluxo de dados SwiftUI", "topics": ["@State, @Binding e fonte única de verdade", "Observable e responsabilidade do estado", "Identidade de views e efeitos da atualização"], "exercise": "Implemente o check-in diário. Passe um Binding para o formulário sem duplicar a lista de hábitos.", "deliverable": "Check-in e criação refletidos imediatamente na tela.", "criteria": ["Alterar um item não muda outro", "Estado de UI e dado persistente têm papéis explícitos"] }, { "title": "Navegação, edição e UX", "topics": ["NavigationStack, destinos e sheet", "Form, controles de frequência e edição", "Estados vazio, validação, sucesso e confirmação de exclusão"], "exercise": "Conecte Hoje, Novo hábito e Detalhes. Acrescente edição e remoção com confirmação.", "deliverable": "Fluxo CRUD completo em memória.", "criteria": ["Excluir volta para uma tela válida", "Cancelar formulário não altera os dados"] }, { "title": "Acessibilidade e layouts", "topics": ["Dynamic Type, VoiceOver e accessibilityLabel", "Contraste, área de toque e informação além da cor", "Layout compacto, paisagem e Reduce Motion"], "exercise": "Teste as telas com letras grandes e VoiceOver. Ajuste o anel de progresso para anunciar valor e contexto.", "deliverable": "Checklist de acessibilidade com capturas e descrição do teste.", "criteria": ["Texto grande não encobre botões", "VoiceOver anuncia nome do hábito e estado do check-in"] }, { "title": "Persistência local", "topics": ["SwiftData: Model, ModelContext, query e save", "Relações entre hábitos e registros", "Separação entre modelo de domínio e persistência quando necessária"], "exercise": "Salve hábitos e check-ins em disco. Use storage em memória para testes.", "deliverable": "Dados mantidos após encerrar e reabrir o app.", "criteria": ["Reabertura preserva registros", "Falha de salvamento vira erro visível"] }, { "title": "Regras de datas e sequência", "topics": ["Calendar, Date e início do dia", "Fuso horário local e comparação por dia", "Frequência semanal, sequência e ausência de registros"], "exercise": "Calcule a sequência considerando somente os dias planejados. Defina a regra para mudança de fuso.", "deliverable": "Cálculo de sequência testado e documentado.", "criteria": ["Mesmo dia não duplica check-in", "Dia não planejado não quebra a sequência"] }, { "title": "Relatórios de hábitos", "topics": ["Agrupamento por dia e semana", "Taxa de conclusão com denominador correto", "Swift Charts e alternativa textual"], "exercise": "Monte a tela Evolução com sete dias, metas e lista das melhores sequências.", "deliverable": "Relatório semanal calculado a partir de dados reais locais.", "criteria": ["Percentual não excede 100%", "Sem dados mostra explicação e gráfico acessível"] }, { "title": "Revisão e refatoração", "topics": ["Funções pequenas e responsabilidades claras", "Dependências explícitas e protocolos apenas quando úteis", "Testes de regras e regressões de CRUD"], "exercise": "Revise os três fluxos principais, extraia duplicações e registre decisões no README.", "deliverable": "Versão local estável do app e relatório de revisão.", "criteria": ["Tests passam após a refatoração", "Consegue explicar fluxo de criação até armazenamento"] }, { "title": "HTTP e Codable", "topics": ["URLSession, URLRequest, status HTTP e JSON", "Codable, DTO e mapeamento para domínio", "Timeout, indisponibilidade e dados inválidos"], "exercise": "Adicione dicas de bem-estar vindas de um JSON de demonstração. Use fixtures locais para não depender de um serviço pago.", "deliverable": "Cliente HTTP com fixtures de sucesso e erro.", "criteria": ["Status de falha não é tratado como sucesso", "JSON inválido mostra mensagem sem crash"] }, { "title": "async/await e MainActor", "topics": ["Função async, await e Task", "Isolamento MainActor para estado da UI", "Cancelamento cooperativo e ciclo de vida de .task"], "exercise": "Carregue dicas sem bloquear a interface e cancele ao sair. Isole atualizações de estado.", "deliverable": "Carregamento assíncrono com estados loading, content e error.", "criteria": ["UI continua interativa durante requisição", "Resultado cancelado não sobrescreve uma tela nova"] }, { "title": "Chamadas simultâneas", "topics": ["async let para quantidade fixa", "TaskGroup para conjunto variável", "Propagação de erros e política de falha parcial"], "exercise": "Busque dicas e resumo de exemplo em paralelo. Permita que o resumo local continue se as dicas falharem.", "deliverable": "Dashboard com resultado parcial e botão de tentar novamente.", "criteria": ["Explica por que usar async let neste caso", "Uma falha não apaga o progresso local"] }, { "title": "Lembretes e permissões", "topics": ["UNUserNotificationCenter e autorização contextual", "Agendamento, identificadores e remoção de notificações", "Negação de permissão e diferenças Simulator/dispositivo"], "exercise": "Agende um lembrete para um hábito e remova-o quando o hábito for excluído.", "deliverable": "Lembrete opcional com orientação para permissões negadas.", "criteria": ["Não pede permissão ao iniciar sem contexto", "Exclusão remove o lembrete correspondente"] }, { "title": "Testes de fluxo e integração", "topics": ["XCTest de regras e armazenamento", "XCUITest: identificadores e fluxo de cadastro", "Fixtures determinísticas e isolamento entre testes"], "exercise": "Automatize cadastro → check-in → reabertura. Teste sequência na virada do dia.", "deliverable": "Suite que valida os fluxos críticos com dados previsíveis.", "criteria": ["Testes não dependem da internet", "Rodar duas vezes não altera o resultado"] }, { "title": "Performance e memória", "topics": ["Instruments: Time Profiler, Allocations e Leaks", "Trabalho fora do caminho de renderização", "Ciclo de vida de Task e referências capturadas"], "exercise": "Carregue 500 hábitos de exemplo e investigue rolagem e retenção de telas.", "deliverable": "Registro de medição e uma melhoria comprovada.", "criteria": ["Compara antes e depois no mesmo ambiente", "Tela fechada não mantém tarefas desnecessárias"] }, { "title": "Build, documentação e beta", "topics": ["Build de release e configurações", "Assinatura e distribuição: conceitos de TestFlight", "README, privacidade e roteiro manual de validação"], "exercise": "Prepare um build e documente como executar, testar e revisar permissões. TestFlight é opcional e exige conta apropriada.", "deliverable": "Build executável e documentação de entrega.", "criteria": ["Outra pessoa segue o README", "Sem segredos ou dados pessoais no repositório"] }, { "title": "Entrega e demonstração", "topics": ["Revisão de requisitos e limitações", "Retrospectiva das decisões e dívidas", "Demonstração com estados vazios, erros e acessibilidade"], "exercise": "Apresente o app em cinco minutos. Mostre criação, check-in, evolução, persistência e lembretes.", "deliverable": "Release do portfólio com vídeo e relatório técnico.", "criteria": ["Todos os critérios essenciais têm evidências", "Explica uma decisão e o que mudaria na próxima versão"] }], "intermediate": [{ "title": "Domínio financeiro e escopo", "topics": ["Dinheiro em centavos inteiros e moeda única BRL", "Transação, conta, categoria e orçamento", "Receita versus despesa, transferência e saldo inicial"], "exercise": "Modele o Luma: duas contas, categorias e transações. Escreva as invariantes antes da UI.", "deliverable": "Modelos com regras e testes de saldo.", "criteria": ["Transferência não aumenta receita", "10,10 + 20,20 resulta exatamente em 30,30"] }, { "title": "Arquitetura e SOLID aplicados", "topics": ["MVVM e fluxo unidirecional de estado", "SRP em regras e I/O, DIP nas dependências", "Injeção por init, protocols e composition root e separação entre DTO, banco e domínio"], "exercise": "Implemente cadastrar transação sem dependência de tela ou rede. Compare arquitetura simples com camadas adicionais.", "deliverable": "Fluxo de criação com fake de repositório e decisão justificada.", "criteria": ["Trocar armazenamento não muda regras", "Explica onde uma camada extra seria desnecessária"] }, { "title": "Design system e dashboard", "topics": ["Tokens de cor, espaçamento e tipografia", "UIKit View Code, Auto Layout e SwiftUI interoperáveis e componentes reutilizáveis", "Dashboard com saldo, comparação mensal e últimos lançamentos"], "exercise": "Construa os componentes das referências: saldo, linha de transação, categoria e barra de orçamento.", "deliverable": "Dashboard com dados de fixture e estados vazio/loading/error.", "criteria": ["Componente suporta valores grandes", "Layout adapta ao tamanho de fonte"] }, { "title": "Navegação e CRUD de lançamentos", "topics": ["Coordinator em UIKit e NavigationStack em SwiftUI", "Formulário de valor, data, categoria e conta", "Validação, exclusão e efeito no histórico"], "exercise": "Implemente lista filtrável, criar, editar e excluir transações. Preserve filtros ao voltar.", "deliverable": "Fluxo completo de lançamentos em memória.", "criteria": ["Valor inválido não salva", "Editar transação atualiza o saldo corretamente"] }, { "title": "Persistência e migrações", "topics": ["Core Data: contexts, fetch, transações de save e migrations", "Atomicidade de transferência e integridade dos dados", "Migração de schema, índices e queries por período"], "exercise": "Persista contas e transações. Acrescente um campo com migração sem apagar dados anteriores.", "deliverable": "Banco local com migração testada.", "criteria": ["Falha não deixa metade da transferência", "Upgrade preserva os lançamentos existentes"] }, { "title": "Orçamentos e relatórios", "topics": ["Agrupamento por categoria e mês", "Limite, restante e gastos acima do orçamento", "Gráfico com legenda e valores acessíveis"], "exercise": "Implemente orçamento por categoria e relatório mensal. Defina regra para despesa estornada.", "deliverable": "Telas Análise e Orçamentos baseadas no banco.", "criteria": ["Trocar mês altera todos os indicadores", "Orçamento excedido mostra valor e alerta textual"] }, { "title": "Networking e contratos", "topics": ["URLSession, Codable e HTTPURLResponse", "DTOs, validação de payload e mapeamento", "Paginação, timeout e distinção de erros"], "exercise": "Use uma API mock documentada para categorias e sincronização. Versione fixtures e contrato.", "deliverable": "Cliente HTTP com testes de 200, erro e payload inválido.", "criteria": ["Sem serviço externo obrigatório", "Erro de validação não é retentado automaticamente"] }, { "title": "Concorrência estruturada", "topics": ["async let, TaskGroup, MainActor, actors e Sendable", "Paralelismo de chamadas independentes", "Cancelamento, isolamento e resultados obsoletos"], "exercise": "Busque resumo e categorias em paralelo. Cancele a busca anterior ao mudar o mês.", "deliverable": "Dashboard assíncrono sem resultados fora de ordem.", "criteria": ["Resposta lenta de janeiro não substitui fevereiro", "Cancelamento não gera mensagem de erro ao usuário"] }, { "title": "Offline-first e fila", "topics": ["Banco como fonte de verdade", "Outbox, ids gerados no cliente e status pendente", "Tarefas foreground", " BGTaskScheduler com execução oportunista e retry com backoff"], "exercise": "Salve lançamento offline e sincronize depois com mock local. Identifique visualmente o item pendente.", "deliverable": "Fila persistente com tentativas e estado de erro.", "criteria": ["Reabrir app não perde fila", "Retry não duplica lançamento remoto"] }, { "title": "Conflitos e consistência", "topics": ["Versão do registro e detecção de edição concorrente", "Idempotência, deduplicação e ordenação", "Política explícita para excluir versus atualizar"], "exercise": "Simule duas edições do mesmo item. Documente política e exiba conflito sem sobrescrever silenciosamente.", "deliverable": "Resolução de conflito com cenários reproduzíveis.", "criteria": ["Repetir requisição mantém um lançamento", "Exclusão e atualização têm resultado definido"] }, { "title": "Acessibilidade e UI adaptativa", "topics": ["VoiceOver, Dynamic Type e Accessibility Inspector", "Texto grande, contraste e alternativas ao gráfico", "Tamanho de janela, teclado e foco"], "exercise": "Audite dashboard, cadastro e relatórios com leitor de tela. Adapte para tela grande.", "deliverable": "Capturas e evidências de auditoria.", "criteria": ["Gráfico tem resumo textual", "Formulário é operável com leitor de tela"] }, { "title": "Testes automatizados", "topics": ["XCTest, XCUITest e testes de armazenamento em memória", "Fakes para rede, relógio e storage", "Testes de fronteira de mês, estorno e saldo"], "exercise": "Teste regras, migração e fluxo criar → editar → excluir. Não use tempo real em testes de datas.", "deliverable": "Suite determinística para riscos financeiros.", "criteria": ["Mudança de mês não altera resultado aleatoriamente", "Teste falha se saldo ficar incorreto"] }, { "title": "Performance e diagnóstico", "topics": ["Instruments: Time Profiler, Allocations e Leaks", "Paginação local e custo de agregação", "Medição de startup, rolagem e memória"], "exercise": "Gere 10 mil transações. Meça abertura e filtro mensal antes de otimizar queries.", "deliverable": "Relatório com ambiente, métricas e comparação.", "criteria": ["Resultados no mesmo dataset", "Otimização não muda totais"] }, { "title": "Privacidade e segurança básica", "topics": ["Keychain para credenciais, políticas de File Protection e HTTPS", "Não registrar valores e dados pessoais em logs", "Exportação consentida e exclusão dos dados locais"], "exercise": "Implemente bloqueio visual opcional e exportação CSV com confirmação. Use dados fictícios.", "deliverable": "Inventário de dados e controles implementados.", "criteria": ["Logs não expõem transações", "Bloqueio de UI não é descrito como criptografia do banco"] }, { "title": "Pipeline e distribuição", "topics": ["xcodebuild em runner macOS, signing e TestFlight opcional", "Checks de regras, integração e build", "Configurações de ambiente e segredos fora do Git"], "exercise": "Monte pipeline que executa testes e gera build. Documente assinatura/distribuição opcional.", "deliverable": "Build reproduzível e workflow CI.", "criteria": ["Falha de teste bloqueia geração de artefato", "Nenhum token fica versionado"] }, { "title": "Entrega de portfólio", "topics": ["Especificação de fluxos e estados", "ADRs das decisões e limitações", "Roteiro de demonstração offline e online"], "exercise": "Entregue Luma com dashboard, contas, lançamentos, orçamentos, análise e sync mock. Grave demonstração.", "deliverable": "Release, README e relatório de validação.", "criteria": ["Demonstra erro, conflito e recuperação", "Explica trade-offs com evidências"] }], "advanced": [{ "title": "ADRs e fronteiras de módulos", "topics": ["Mapear features Accounts, Transactions, Budgets e Analytics", "Distinguir contrato público, implementação e composition root", "Comparar feature-first versus camadas e medir impacto no build"], "exercise": "Escreva dois ADRs com contexto, opções, decisão, consequências e revisão. Desenhe um grafo de dependências sem ciclos.", "deliverable": "ADRs de modularização e offline-first com diagrama e metas.", "criteria": ["Justifica fronteiras pelo motivo de mudança", "Explica dependência permitida e proibida em cada módulo"] }, { "title": "Modularização e evolução de APIs", "topics": ["Swift Package Manager, targets, produtos e access control", "DTOs internos e interfaces públicas mínimas", "Compatibilidade, depreciação e migração incremental"], "exercise": "Extraia Transactions com contrato público. Migre consumidores em dois passos mantendo app compilável.", "deliverable": "Feature isolada com teste de contrato e plano de migração.", "criteria": ["Módulo não importa UI de outra feature", "Uma mudança interna não quebra consumidor"] }, { "title": "Concorrência e segurança de estado", "topics": ["Strict concurrency checking, actor isolation, Sendable e actor reentrancy", "Reentrância, cancelamento e lifetime de tarefas", "Diferenciar exclusão mútua de ordenação de eventos"], "exercise": "Simule refresh, edição e logout simultâneos. Defina dono de cada estado e elimine escrita após logout.", "deliverable": "Mapa de isolamento e testes das interleavings críticas.", "criteria": ["Execução repetida não perde atualização", "Explica por que serializar chamadas não basta"] }, { "title": "Motor de sincronização resiliente", "topics": ["Outbox transacional, ids estáveis e tombstones", "Idempotency key, versionamento e política de conflito", "Retry limitado, backoff e recuperação após crash"], "exercise": "Implemente sync mock que cai após servidor aceitar a operação. Reenvie sem duplicação e preserve ordem por entidade.", "deliverable": "Motor com simulação de crash, duplicata e DELETE→recriação.", "criteria": ["Reenvio não duplica dados", "Delete e recriação da chave respeitam ordem e versão"] }, { "title": "Migrações e integridade financeira", "topics": ["Schema versionado e upgrade de banco", "Transferências e invariantes transacionais", "Recorrências por competência e prevenção de geração dupla"], "exercise": "Adicione transferências e recorrências. Teste upgrade com base antiga e execução duas vezes do gerador.", "deliverable": "Migration e gerador idempotente com fixtures antigas.", "criteria": ["Rollback mantém integridade da transferência", "Mesma competência não gera cobrança duplicada"] }, { "title": "Design system em escala", "topics": ["UIKit View Code, Auto Layout e SwiftUI interoperáveis", "Tokens versionados e componentes com contrato", "Estados, acessibilidade e integração entre UI legada/moderna"], "exercise": "Monte catálogo de componentes e tela de detalhe de orçamento. Defina política de breaking changes visuais.", "deliverable": "Design system com exemplos, estados e testes relevantes.", "criteria": ["Componentes não conhecem regra financeira", "Letras grandes e contraste validados"] }, { "title": "Performance com orçamento", "topics": ["Instruments, XCTest performance metrics e medições em dispositivo", "Startup, latência p95, rolagem e consumo de memória", "Dataset, warmup, device e repetição controlados"], "exercise": "Defina metas após medir baseline. Compare consultas, agregações e renderização com 10 mil transações.", "deliverable": "Relatório reproduzível com mediana/p95 e limitações.", "criteria": ["Meta vem de baseline documentado", "Melhoria tem evidência e mantém os totais"] }, { "title": "Threat modeling e dados sensíveis", "topics": ["Keychain para credenciais, políticas de File Protection e HTTPS", "Ativos, fronteiras de confiança e cenários de abuso", "Dados em repouso, backups, logs e exposição em background"], "exercise": "Desenhe threat model para armazenamento, exportação e sessão. Implemente controles para os três riscos prioritários.", "deliverable": "Modelo de ameaças, controles e riscos residuais.", "criteria": ["Segredos não estão no app/repositório", "Descreve proteção real sem prometer invulnerabilidade"] }, { "title": "Estratégia de testes e quality gates", "topics": ["Pirâmide orientada a risco financeiro", "XCTest, XCUITest e testes de armazenamento em memória e testes de contrato de API", "Fixtures antigas, rede instável e relógio controlado"], "exercise": "Defina matriz risco→teste. Automatize saldo, recorrência, sync e migração com gate na CI.", "deliverable": "Matriz e pipeline com falha intencional demonstrada.", "criteria": ["Gate detecta duplicação de operação", "Testes críticos independem de serviço externo"] }, { "title": "Observabilidade e falhas", "topics": ["Logs estruturados sem conteúdo pessoal", "Métricas de fila, falhas e tempos", "Correlation id e classificação de erros"], "exercise": "Adicione diagnóstico de sync e simule incidente: fila parada com versão incompatível.", "deliverable": "Painel local de diagnóstico e runbook de incidente.", "criteria": ["Diagnóstico não expõe valores/nomes", "Runbook permite reproduzir e recuperar falha"] }, { "title": "Entrega progressiva e compatibilidade", "topics": ["xcodebuild em runner macOS, signing e TestFlight opcional", "Feature flags com fallback local seguro", "Rollout, compatibilidade com servidor e estratégia de desativação"], "exercise": "Prepare release candidate e flag de recorrências. Simule backend antigo e desligue feature sem perder dados.", "deliverable": "Plano de release com critérios de parada e mitigação.", "criteria": ["Flag não invalida registros existentes", "Distingue rollback de build e mitigação por flag"] }, { "title": "Revisão arquitetural e mentoria", "topics": ["Avaliação de trade-offs com custo e risco", "Documentação de onboarding e code review", "Dívida priorizada por impacto e próximo experimento"], "exercise": "Faça revisão técnica do Luma Pro e prepare um onboarding de 15 minutos. Relacione decisões a evidências.", "deliverable": "Release, vídeo, ADRs, benchmarks e revisão externa sugerida.", "criteria": ["Revisor executa sem ajuda", "Consegue defender e reconsiderar decisões com dados"] }] } };
+        const KEY = 'mobile-atlas-v2', OLD = 'mobile-atlas-v1';
+        const names = { beginner: 'Iniciante', intermediate: 'Intermediário', advanced: 'Avançado' };
+        const platforms = { android: 'Android', ios: 'iOS' };
+        let saved = { tracks: {}, platform: 'android', level: 'beginner' };
+        let storageFailed = false;
+        try { const raw = JSON.parse(localStorage.getItem(KEY) || 'null'); if (validSave(raw)) saved = raw; else { const old = JSON.parse(localStorage.getItem(OLD) || 'null'); if (old && ['android', 'ios'].includes(old.platform) && names[old.level]) { saved.platform = old.platform; saved.level = old.level; saved.legacy = old; } } } catch { storageFailed = true }
+        let platform = saved.platform, level = saved.level, phase = 0, screen = 0, filter = 'all', query = '';
+        const el = id => document.getElementById(id), esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        function validSave(v) { if (!v || v.version !== 2 || !['android', 'ios'].includes(v.platform) || !names[v.level] || !v.tracks || typeof v.tracks !== 'object' || Array.isArray(v.tracks)) return false; return Object.entries(v.tracks).every(([k, t]) => /^(android|ios)-(beginner|intermediate|advanced)$/.test(k) && t && typeof t === 'object' && ['proof', 'done', 'ratings', 'notes'].every(f => t[f] && typeof t[f] === 'object' && !Array.isArray(t[f])) && Object.values(t.done).every(x => typeof x === 'boolean') && Object.values(t.proof).every(x => Array.isArray(x) && x.length === 3 && x.every(b => typeof b === 'boolean')) && Object.values(t.ratings).every(x => Number.isInteger(x) && x >= 1 && x <= 5) && Object.values(t.notes).every(x => typeof x === 'string' && x.length <= 5000)) }
+        function weeks() { return curriculum[platform][level] }
+        function trackKey() { return platform + '-' + level }
+        function track() { return saved.tracks[trackKey()] ||= { proof: {}, done: {}, ratings: {}, notes: {} } }
+        function persist() { saved.version = 2; saved.platform = platform; saved.level = level; try { localStorage.setItem(KEY, JSON.stringify(saved)); storageFailed = false } catch { if (!storageFailed) toast('Não foi possível salvar. Exporte seu progresso.'); storageFailed = true } }
+        function toast(s) { let t = document.querySelector('.toast'); if (t) t.remove(); t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = s; document.body.append(t); setTimeout(() => t.remove(), 4500) }
+        function groups() { const size = 4; return Array.from({ length: Math.ceil(weeks().length / size) }, (_, i) => ({ start: i * size, end: Math.min(i * size + size, weeks().length) })) }
+        function phaseNames() { return level === 'beginner' ? ['Fundamentos', 'Primeiras telas', 'Interface e estado', 'Dados e regras', 'Rede e concorrência', 'Qualidade e entrega'] : level === 'intermediate' ? ['Domínio e interface', 'Dados e concorrência', 'Sync e qualidade', 'Produção e portfólio'] : ['Arquitetura e sync', 'Integridade e plataforma', 'Excelência e release'] }
+        const docs = { android: [['Curso oficial Compose', 'https://developer.android.com/courses/android-basics-compose/course'], ['Arquitetura offline-first', 'https://developer.android.com/topic/architecture/data-layer/offline-first'], ['Documentação Android', 'https://developer.android.com/docs']], ios: [['Fundamentos Swift', 'https://docs.swift.org/latest/documentation/the-swift-programming-language/guidedtour/'], ['Swift Concurrency', 'https://docs.swift.org/latest/documentation/the-swift-programming-language/concurrency/'], ['Instruments', 'https://developer.apple.com/tutorials/instruments']] };
+        function linksFor(i) { const advanced = /Performance|concorrência|Concorrência|Chamadas|sincronização|sync|Offline/.test(weeks()[i].title); return platform === 'ios' ? (advanced ? docs.ios.slice(1) : docs.ios.slice(0, 2)) : (advanced ? docs.android.slice(1) : [docs.android[0], docs.android[2]]) }
+        function render() { const state = track(); document.querySelectorAll('#platform button').forEach(b => { b.classList.toggle('active', b.dataset.value === platform); b.setAttribute('aria-pressed', b.dataset.value === platform) }); document.querySelectorAll('#level button').forEach(b => { b.classList.toggle('active', b.dataset.value === level); b.setAttribute('aria-pressed', b.dataset.value === level) }); el('planet').textContent = platform === 'ios' ? '⌘' : '◉'; el('trackTitle').textContent = platforms[platform] + ' · ' + names[level]; el('weeks').textContent = weeks().length; el('projectType').textContent = 'Projeto guia · ' + platforms[platform] + ' · ' + names[level]; renderProject(); renderControls(); renderWeeks(); renderSurvey(); update(); }
+        function renderControls() { const gs = groups(), s = track(); const prereq = level === 'beginner' ? 'Comece aqui se ainda está aprendendo a linguagem. Android requer Android Studio; para desenvolver iOS, você precisa de um Mac com Xcode.' : level === 'intermediate' ? 'Pré-requisito: criar telas, persistir dados locais e escrever testes de regras. Se isso ainda for difícil, revise as fases 1–4 da trilha iniciante.' : 'Pré-requisito: entregar um app com arquitetura testável, rede e persistência. Se não domina cancelamento e offline-first, revise a trilha intermediária.'; el('roadmapControls').innerHTML = `<div class="roadmap-top"><div><b>${weeks().length} semanas · ${level === 'beginner' ? '8–10' : '10–12'} h/semana</b><p class="notice">${prereq}</p></div><div class="filters"><input class="search" id="search" placeholder="Buscar assunto em toda a trilha" aria-label="Buscar assunto" value="${esc(query)}"><select id="filter" aria-label="Filtrar semanas"><option value="all">Todas as semanas</option><option value="pending">Pendentes</option><option value="done">Concluídas</option></select></div></div><div class="phase-grid">${gs.map((g, i) => { const done = weeks().slice(g.start, g.end).filter((_, j) => s.done[g.start + j]).length; return `<button class="phase ${phase === i ? 'active' : ''}" data-phase="${i}" aria-pressed="${phase === i}"><b>Fase ${i + 1}</b><small>${phaseNames()[i]}</small><small>S${g.start + 1}–S${g.end} · ${done}/${g.end - g.start}</small><div class="phase-meter"><i style="width:${done / (g.end - g.start) * 100}%"></i></div></button>` }).join('')}</div><p class="notice">${saved.legacy ? 'Seu progresso da versão anterior foi preservado no backup exportável. As novas semanas usam uma checklist própria, pois o conteúdo mudou. ' : ''}Marque as três evidências de uma semana para habilitar sua conclusão. As fases ficam acessíveis para revisão.</p>`; el('filter').value = filter; el('filter').onchange = e => { filter = e.target.value; renderWeeks() }; el('search').oninput = e => { query = e.target.value; renderWeeks() }; el('roadmapControls').querySelectorAll('[data-phase]').forEach(b => b.onclick = () => { phase = Number(b.dataset.phase); query = ''; renderControls(); renderWeeks() }) }
+        function renderWeeks() { const s = track(), g = groups()[phase]; const found = weeks().map((w, i) => ({ ...w, i })).filter(w => (query ? JSON.stringify(w).toLocaleLowerCase('pt-BR').includes(query.toLocaleLowerCase('pt-BR')) : w.i >= g.start && w.i < g.end) && (filter === 'all' || (filter === 'done' ? s.done[w.i] : !s.done[w.i]))); el('modules').innerHTML = `<div class="section-head"><h2>${query ? 'Resultados em toda a trilha' : phaseNames()[phase]}</h2><small>${found.length} semanas · abra para explorar</small></div>` + found.map((w, j) => { const i = w.i, proof = s.proof[i] || [false, false, false], ready = proof.every(Boolean); return `<details class="panel week" data-week="${i}" ${j === 0 ? 'open' : ''}><summary><span class="badge">${s.done[i] ? '✓' : '○'}</span><div><small>SEMANA ${i + 1} · ${platforms[platform]}</small><strong>${esc(w.title)}</strong></div></summary><div class="week-body"><p class="notice">Pré-requisito: ${i === 0 ? (level === 'beginner' ? 'nenhum conhecimento mobile prévio.' : 'conhecimentos descritos no início da trilha.') : 'entregável da semana ' + i + ' ou conhecimento equivalente.'} Sugestão: 30% estudo, 50% implementação e 20% validação.</p><div class="lesson-grid"><div><h4>01 · O que estudar</h4><ul>${w.topics.map(t => `<li>${esc(t)}</li>`).join('')}</ul><div class="resources">${linksFor(i).map(([name, url]) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${name} ↗</a>`).join('')}</div></div><div><h4>02 · Exercício no projeto</h4><p>${esc(w.exercise)}</p><h4>03 · Entregável da semana</h4><p>${esc(w.deliverable)}</p></div></div><div class="proof"><h4>04 · Critérios de avaliação</h4><ul>${w.criteria.map(c => `<li>${esc(c)}</li>`).join('')}</ul>${['Estudei os tópicos e consigo explicá-los com minhas palavras.', 'Implementei o entregável e registrei uma evidência.', 'Validei todos os critérios acima, incluindo os casos de erro.'].map((t, k) => `<label><input type="checkbox" data-proof="${i}:${k}" ${proof[k] ? 'checked' : ''}>${t}</label>`).join('')}<label class="week-complete"><input type="checkbox" data-done="${i}" ${s.done[i] ? 'checked' : ''} ${ready ? '' : 'disabled'}>Concluir semana ${i + 1}</label></div><div style="margin-top:18px"><h4>05 · Evidências e dúvidas</h4><textarea data-note="${i}" maxlength="5000" aria-label="Evidências da semana ${i + 1}" placeholder="Link de commit, testes realizados, o que aprendi e dúvidas...">${esc(s.notes[i] || '')}</textarea><div class="notice">Salvo localmente. O checklist registra sua validação; não executa testes do aplicativo.</div></div></div></details>` }).join(''); if (!found.length) el('modules').innerHTML += '<div class="panel empty">Nenhuma semana corresponde à busca ou ao filtro.</div>'; el('phaseNav').className = 'actions plan-nav'; el('phaseNav').innerHTML = `<button class="btn" id="prev" ${phase === 0 ? 'disabled' : ''}>← Fase anterior</button><span class="notice">Fase ${phase + 1} de ${groups().length}</span><button class="btn" id="nextPhase" ${phase === groups().length - 1 ? 'disabled' : ''}>Próxima fase →</button>`; el('prev').onclick = () => changePhase(-1); el('nextPhase').onclick = () => changePhase(1); el('modules').querySelectorAll('[data-proof]').forEach(x => x.onchange = () => { const [i, k] = x.dataset.proof.split(':').map(Number); s.proof[i] ||= [false, false, false]; s.proof[i][k] = x.checked; const complete = el('modules').querySelector(`[data-done="${i}"]`); complete.disabled = !s.proof[i].every(Boolean); if (complete.disabled) { s.done[i] = false; complete.checked = false; x.closest('details').querySelector('.badge').textContent = '○' } persist(); refreshProgress() }); el('modules').querySelectorAll('[data-done]').forEach(x => x.onchange = () => { const i = Number(x.dataset.done); s.done[i] = x.checked && s.proof[i].every(Boolean); x.closest('details').querySelector('.badge').textContent = s.done[i] ? '✓' : '○'; persist(); refreshProgress(); if (s.done[i]) toast('Semana ' + (i + 1) + ' concluída. Evidência registrada!') }); el('modules').querySelectorAll('[data-note]').forEach(x => x.oninput = () => { s.notes[x.dataset.note] = x.value; persist() }) }
+        function refreshProgress() { update(); const s = track(); el('roadmapControls').querySelectorAll('[data-phase]').forEach(b => { const i = Number(b.dataset.phase), g = groups()[i], done = weeks().slice(g.start, g.end).filter((_, j) => s.done[g.start + j]).length; b.querySelectorAll('small')[1].textContent = `S${g.start + 1}–S${g.end} · ${done}/${g.end - g.start}`; b.querySelector('i').style.width = done / (g.end - g.start) * 100 + '%' }) }
+        function changePhase(delta) { phase += delta; query = ''; renderControls(); renderWeeks(); el('roadmapControls').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }) }
+        function update() { const ws = weeks(), s = track(), done = ws.filter((_, i) => s.done[i]).length, pct = Math.round(done / ws.length * 100); el('pct').textContent = pct + '%'; el('doneCount').textContent = done + ' de ' + ws.length + ' semanas concluídas'; el('overallBar').style.width = pct + '%'; const ratings = ws.map((_, i) => s.ratings[i]).filter(x => x !== undefined); el('confidence').textContent = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : '—'; const i = ws.findIndex((_, i) => !s.done[i]); el('next').textContent = i < 0 ? 'Trilha concluída!' : 'S' + (i + 1) + ' · ' + ws[i].title; renderChart(); }
+        function renderChart() { const ws = weeks(), s = track(), gs = groups(), width = 700, height = 265, left = 42, right = 20, top = 20, bottom = 36, x = i => left + i * (width - left - right) / gs.length, y = v => top + (100 - v) / 100 * (height - top - bottom); const expected = [0, ...gs.map(g => g.end / ws.length * 100)], actual = [0, ...gs.map(g => ws.slice(0, g.end).filter((_, j) => s.done[j]).length / ws.length * 100)]; const path = v => v.map((n, i) => (i ? 'L' : 'M') + x(i) + ',' + y(n)).join(' '); el('chart').innerHTML = `<div class="legend"><span>Plano acumulado por fase</span><span>Semanas efetivamente concluídas</span></div><svg class="chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Comparação do plano de conclusão por fase com o checklist realizado"><defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#54e6c2" stop-opacity=".25"/><stop offset="1" stop-color="#54e6c2" stop-opacity="0"/></linearGradient></defs>${[0, 25, 50, 75, 100].map(v => `<line x1="${left}" y1="${y(v)}" x2="680" y2="${y(v)}" stroke="#29334b" stroke-dasharray="3 5"/><text x="2" y="${y(v) + 4}" fill="#9caac6" font-size="11">${v}%</text>`).join('')}<path d="${path(actual)} L${x(gs.length)},${y(0)} L${x(0)},${y(0)} Z" fill="url(#area)"/><path d="${path(expected)}" stroke="#8a7cff" stroke-width="3" fill="none" stroke-dasharray="6 5"/><path d="${path(actual)}" stroke="#54e6c2" stroke-width="3" fill="none"/>${expected.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="#8a7cff"><title>Plano ${i === 0 ? 'início' : 'fase ' + i}: ${Math.round(v)}%</title></circle><circle cx="${x(i)}" cy="${y(actual[i])}" r="5" fill="#54e6c2"><title>Concluído até ${i === 0 ? 'início' : 'fase ' + i}: ${Math.round(actual[i])}%</title></circle><text x="${x(i)}" y="${height - 10}" text-anchor="middle" fill="#9caac6" font-size="11">${i === 0 ? 'Início' : 'S' + gs[i - 1].end}</text>`).join('')}</svg><p class="notice">Eixo horizontal: fases do plano, não tempo decorrido. O gráfico mede conclusão, não competência ou senioridade. A confiança está na autoavaliação abaixo.</p><details><summary class="notice">Ver valores do gráfico</summary><table class="chart-table"><tr><th>Fase</th><th>Plano</th><th>Concluído</th></tr>${gs.map((g, i) => `<tr><td>S${g.start + 1}–S${g.end}</td><td>${Math.round(expected[i + 1])}%</td><td>${Math.round(actual[i + 1])}%</td></tr>`).join('')}</table></details>`; }
+        function renderSurvey() { const s = track(); el('survey').innerHTML = weeks().map((w, i) => `<div class="survey-item"><div class="line"><b>S${i + 1} · ${esc(w.title)}</b><span id="score-${i}">${s.ratings[i] ? s.ratings[i] + '/5' : 'Não avaliado'}</span></div><input type="range" min="1" max="5" step="1" value="${s.ratings[i] || 1}" data-rating="${i}" aria-label="Confiança em ${esc(w.title)}"><button class="btn" data-rate="${i}">${s.ratings[i] ? 'Atualizar nota' : 'Registrar nota selecionada'}</button></div>`).join(''); el('survey').querySelectorAll('[data-rating]').forEach(x => x.oninput = () => rate(Number(x.dataset.rating), Number(x.value))); el('survey').querySelectorAll('[data-rate]').forEach(x => x.onclick = () => rate(Number(x.dataset.rate), Number(el('survey').querySelector(`[data-rating="${x.dataset.rate}"]`).value))) }
+        function rate(i, v) { track().ratings[i] = v; el('score-' + i).textContent = v + '/5'; persist(); update() }
+        const specs = { beginner: [['Hoje', ['Saudação, seletor de dia e resumo de metas', 'Cartões com nome, frequência e botão de check-in', 'Acesso ao cadastro e à evolução'], ['Vazio: convite para criar o primeiro hábito', 'Concluído: ícone + texto, além da cor', 'Falha ao salvar: preservar estado anterior e permitir retry'], ['Check-in diário idempotente', 'Texto grande sem truncamento', 'Progresso recalculado com os registros']], ['Novo hábito', ['Nome obrigatório e ícone/cor opcionais', 'Seleção de dias da semana', 'Lembrete opcional com permissão contextual'], ['Nome vazio: erro ao lado do campo', 'Cancelar: descartar sem salvar', 'Permissão negada: permitir hábito sem lembrete'], ['Não salvar nome somente com espaços', 'Pelo menos um dia selecionado', 'Editar mantém o id original']], ['Evolução', ['Gráfico semanal com alternativa textual', 'Taxa de conclusão e melhores sequências', 'Resumo por hábito e semana selecionada'], ['Sem registros: explicação sem números inventados', 'Sem metas no período: mostrar “não aplicável”', 'Datas: calendário e fuso documentados'], ['Denominador considera os dias previstos', 'Percentual nunca supera 100%', 'Mudança de período atualiza todos os números']]], financial: [['Visão geral', ['Saldo consolidado e contas selecionadas', 'Receitas/despesas do mês e últimas transações', 'Atalho para criar lançamento e status de sync'], ['Loading com conteúdo local preservado', 'Sem dados: CTA para criar conta', 'Offline: estado pendente e data de atualização'], ['Transferências não entram em receitas/despesas', 'Moeda formatada a partir de centavos', 'Filtros de mês e conta afetam o resumo']], ['Novo lançamento', ['Tipo, valor, conta, categoria, data e descrição', 'Receita e despesa; transferência na trilha avançada', 'Edição com confirmação de remoção'], ['Campos obrigatórios com erro inline', 'Salvando: evitar toques repetidos', 'Offline: persistir e enfileirar operação'], ['Valor maior que zero e parsing sem arredondamento binário', 'Cancelar não grava parcialmente', 'Editar preserva identidade do lançamento']], ['Análise e orçamento', ['Donut por categoria com lista equivalente', 'Limite, gasto e saldo do orçamento', 'Filtros por mês e conta + detalhe de categoria'], ['Sem despesas: sem gráfico fictício', 'Acima do limite: alerta textual e valor excedente', 'Sync parcial: dados locais e aviso de atualização'], ['Categorias somam o total do período', 'Estorno segue regra explícita', 'Gráfico é acessível pelo leitor de tela']]] };
+        function rowUI(icon, title, sub, amount) { return `<div class="mini-row"><span class="iconbox">${icon}</span><span style="flex:1"><b>${title}</b><small>${sub}</small></span><b>${amount}</b></div>` }
+        function device(content, i, title) { return `<button class="device ${screen === i ? 'selected' : ''}" data-screen="${i}" aria-label="Ver especificação de ${title}" aria-pressed="${screen === i}"><div class="status"><span>9:41</span><span>● ▰</span></div><div class="island"></div>${content}</button>` }
+        function renderProject() {
+            const begin = level === 'beginner', pro = level === 'advanced'; el('projectName').textContent = begin ? 'Bloom · pequenos hábitos, dias melhores' : pro ? 'Luma Pro · finanças com engenharia de produção' : 'Luma · sua vida financeira em perspectiva'; el('projectDescription').textContent = begin ? 'Um app de hábitos com criação, frequência, check-in diário, sequências, relatórios locais e lembretes opcionais. O projeto começa com lógica simples e cresce a cada semana.' : pro ? 'Amplie o Luma com múltiplas contas, transferências, recorrências, sincronização resiliente, migrações, módulos independentes e observabilidade. O foco é demonstrar decisões técnicas, integridade e confiabilidade.' : 'Construa um gerenciador financeiro com contas, receitas, despesas, categorias, orçamentos, análise mensal e sincronização com uma API mock. Sem integração bancária: use exclusivamente dados fictícios.';
+            const tabs = '<div class="tabbar"><b>◈ Início</b><span>▤ Registros</span><span>◴ Evolução</span></div>';
+            const screens = begin ? [`<small>QUARTA, 14 DE OUTUBRO</small><h4>Seu dia, mais leve ✦</h4><div class="habit-hero"><small>UM PASSO DE CADA VEZ</small><b>3 de 4</b><span style="font-size:12px">hábitos concluídos hoje</span><div style="height:6px;background:#c8c8e8;border-radius:6px;margin-top:15px"><div style="width:75%;height:6px;background:#8a77dc;border-radius:6px"></div></div></div><div class="weekdays">${['S<br>12', 'T<br>13', 'Q<br>14', 'Q<br>15', 'S<br>16', 'S<br>17', 'D<br>18'].map((d, i) => `<span class="${i === 2 ? 'today' : ''}">${d}</span>`).join('')}</div>${rowUI('☀', 'Caminhada', '20 minutos · manhã', '✓')}${rowUI('≈', 'Beber água', '6 de 8 copos', '＋')}${rowUI('▤', 'Ler um pouco', '10 páginas · noite', '✓')}${tabs}`, `<small>UM NOVO COMEÇO</small><h4>Crie seu hábito</h4><div class="habit-hero" style="text-align:center;font-size:40px">✿<div style="font-size:12px;margin-top:10px">Cuide de você, um dia de cada vez.</div></div><div class="field">Nome do hábito<b>Caminhada ao ar livre</b></div><div class="field">Frequência<b>Seg · Qua · Sex</b></div><div class="field">Lembrete opcional<b>07:30 · ativado</b></div><div class="phone-cta">Criar hábito</div>${tabs}`, `<small>CELEBRE A CONSISTÊNCIA</small><h4>Você está evoluindo</h4><div class="donut" style="background:conic-gradient(#8872df 0 78%,#e6e3f6 78%)"><span>Esta semana<b>78%</b></span></div><div class="mini-bars">${[45, 70, 55, 90, 75, 100, 65].map(h => `<i style="height:${h}%"></i>`).join('')}</div>${rowUI('✦', 'Melhor sequência', 'Caminhada', '12 dias')}${rowUI('♡', 'Seu ritmo', '24 check-ins', '↑ 18%')}${tabs}`] : [`<small>SEU DINHEIRO, COM CLAREZA</small><h4>Luma${pro ? ' Pro' : ''} ✦</h4><div class="balance"><small>Saldo disponível · todas as contas</small><strong>R$ 4.820,50</strong><div style="display:flex;justify-content:space-between;font-size:11px"><span>↑ Receitas<br><b>R$ 7.650,00</b></span><span>↓ Despesas<br><b>R$ 2.829,50</b></span></div></div><h5>Últimos lançamentos</h5>${rowUI('◉', 'Supermercado', 'Alimentação · hoje', '− R$ 87,64')}${rowUI('↗', 'Transporte', 'Mobilidade · ontem', '− R$ 24,50')}${rowUI('▤', 'Livraria', 'Educação · 12 out', '− R$ 59,90')}<div class="notice" style="color:#8891a3">${pro ? '↻ 2 operações pendentes · offline' : '✓ Dados de demonstração'}</div>${tabs}`, `<small>ORGANIZE SEU DIA A DIA</small><h4>Novo lançamento</h4><div class="balance" style="text-align:center"><small>DESPESA</small><strong>R$ 87,64</strong></div><div class="field">Descrição<b>Supermercado</b></div><div class="field">Categoria e conta<b>Alimentação · Conta principal</b></div><div class="field">Data${pro ? ' e repetição' : ''}<b>14 de outubro${pro ? ' · mensal' : ''}</b></div><div class="phone-cta">Salvar lançamento</div>${tabs}`, `<small>ENTENDA SEUS NÚMEROS</small><h4>Seu mês em foco</h4><div class="donut"><span>Despesas do mês<b>R$ 2.829</b></span></div>${rowUI('◉', 'Alimentação', '35% do total', 'R$ 990,33')}${rowUI('✦', 'Lazer', '43% do total', 'R$ 1.216,69')}<h5>Orçamento de alimentação</h5><div style="height:7px;border-radius:8px;background:#e4e5ed"><div style="width:66%;height:7px;border-radius:8px;background:#9274e5"></div></div><p style="font-size:11px;color:#7b8498">R$ 990,33 usados · limite R$ 1.500</p>${tabs}`];
+            const ss = begin ? specs.beginner : specs.financial; el('mockups').innerHTML = `<div class="device-row">${screens.map((s, i) => device(s, i, ss[i][0])).join('')}</div><div id="screenSpec" class="screen-spec"></div><div class="project-scope"><div><h3>Escopo do aplicativo</h3><ul>${(begin ? ['Criar, editar e excluir hábitos', 'Escolher frequência e lembrete opcional', 'Check-in diário sem duplicação', 'Persistência e estatísticas semanais', 'Dicas via JSON mock nas últimas fases'] : pro ? ['Tudo do Luma intermediário', 'Transferências atômicas entre contas', 'Recorrências sem geração duplicada', 'Outbox, conflitos e recuperação após crash', 'Módulos, migrações e diagnósticos'] : ['Contas e categorias', 'CRUD de receitas e despesas em centavos', 'Filtros por mês, conta e categoria', 'Orçamentos e relatórios mensais', 'Persistência e sincronização mock']).map(t => `<li>${t}</li>`).join('')}</ul></div><div><h3>Marcos de construção</h3>${groups().map((g, i) => `<div class="milestone"><b>Fase ${i + 1} · ${phaseNames()[i]}</b><br>${esc(weeks()[g.end - 1].deliverable)}</div>`).join('')}</div></div><p class="notice">As referências são ilustrações de layout, não o app nativo funcionando. Os valores e gráficos nas telas são fictícios. ${begin ? 'Sem backend obrigatório.' : 'API mock com fixtures versionadas; backend real e integração bancária ficam fora do escopo.'} A jornada é um plano de prática, não uma certificação de nível.</p>`; el('mockups').querySelectorAll('[data-screen]').forEach(b => b.onclick = () => { screen = Number(b.dataset.screen); el('mockups').querySelectorAll('[data-screen]').forEach(d => { d.classList.toggle('selected', Number(d.dataset.screen) === screen); d.setAttribute('aria-pressed', Number(d.dataset.screen) === screen) }); renderSpec() }); renderSpec();
+        }
+        function renderSpec() { const ss = (level === 'beginner' ? specs.beginner : specs.financial)[screen]; el('screenSpec').innerHTML = `<h3>Tela ${screen + 1} · ${ss[0]}</h3><div class="spec-grid">${['Elementos e ações', 'Estados obrigatórios', 'Critérios de implementação'].map((t, i) => `<div><h4>${t}</h4><ul>${ss[i + 1].map(x => `<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>` }
+        document.querySelectorAll('#platform button').forEach(b => b.onclick = () => { platform = b.dataset.value; phase = 0; query = ''; filter = 'all'; persist(); render() }); document.querySelectorAll('#level button').forEach(b => b.onclick = () => { level = b.dataset.value; phase = 0; query = ''; filter = 'all'; screen = 0; persist(); render() });
+        el('reset').onclick = () => { if (confirm('Reiniciar somente ' + platforms[platform] + ' / ' + names[level] + '? Checklists, notas e autoavaliações desta trilha serão removidos.')) { saved.tracks[trackKey()] = { proof: {}, done: {}, ratings: {}, notes: {} }; persist(); render(); toast('Trilha reiniciada.') } };
+        el('export').onclick = () => { saved.version = 2; const blob = new Blob([JSON.stringify({ ...saved, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'mobile-atlas-progresso.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000) };
+        el('import').onclick = () => el('importFile').click(); el('importFile').onchange = async e => { const f = e.target.files[0]; if (!f) return; try { if (f.size > 2000000) throw Error('Arquivo grande demais'); const data = JSON.parse(await f.text()); if (!validSave(data)) throw Error('Formato inválido. Use um export da versão 2.'); if (confirm('Substituir o progresso de todas as trilhas pelo backup selecionado?')) { saved = data; platform = saved.platform; level = saved.level; phase = 0; filter = 'all'; query = ''; screen = 0; persist(); render(); toast('Progresso restaurado.') } } catch (err) { toast('Importação não realizada: ' + err.message) } e.target.value = '' };
+        render(); if (storageFailed) toast('Armazenamento indisponível. Use exportar progresso para guardar suas anotações.');
+    </script>
+</body>
+
+</html>
